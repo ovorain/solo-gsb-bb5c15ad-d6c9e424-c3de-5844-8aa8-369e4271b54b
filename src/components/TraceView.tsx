@@ -23,11 +23,18 @@ function pathOf(u: string): string {
   }
 }
 
-function StepCard({ step }: { step: Step }) {
+/** 单步轨迹卡片；firstDiff 时高亮为「首个差异步」，供回归对比面板复用 */
+export function StepCard({
+  step,
+  firstDiff = false,
+}: {
+  step: Step;
+  firstDiff?: boolean;
+}) {
   const { rule } = step;
   const paramEntries = Object.entries(step.params);
   return (
-    <div className="step">
+    <div className={`step${firstDiff ? ' step-first-diff' : ''}`}>
       <header>
         <span className="step-n">步骤 {step.n}</span>
         命中规则 #{step.ruleIndex + 1}「{rule.name}」

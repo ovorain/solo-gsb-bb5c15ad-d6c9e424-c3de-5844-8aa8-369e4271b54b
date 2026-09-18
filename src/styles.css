@@ -552,3 +552,169 @@ input.invalid {
 .share-rule-list code {
   color: var(--muted);
 }
+
+/* ---- 规则回归对比 ---- */
+
+.reg-panel {
+  margin-top: 20px;
+}
+
+.reg-baseline-info {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.reg-changed-text {
+  color: var(--error);
+}
+
+.reg-cases {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reg-case {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.reg-case-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.reg-toggle {
+  padding: 3px 8px;
+  min-width: 30px;
+}
+
+.reg-case-name {
+  width: 130px;
+}
+
+.reg-case-head select {
+  width: 100px;
+}
+
+.reg-case-url {
+  flex: 1;
+  min-width: 200px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+
+.reg-case-head button {
+  padding: 4px 10px;
+}
+
+.reg-verdict {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  border: 1px solid;
+}
+
+.reg-verdict-badge {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.reg-verdict-changed {
+  border-color: var(--error);
+  background: rgba(229, 83, 75, 0.1);
+}
+
+.reg-verdict-changed .reg-verdict-badge {
+  color: var(--error);
+}
+
+.reg-verdict-same {
+  border-color: var(--ok);
+  background: rgba(47, 191, 113, 0.08);
+}
+
+.reg-verdict-same .reg-verdict-badge {
+  color: var(--ok);
+}
+
+.reg-verdict-stale {
+  border-color: var(--border);
+  color: var(--muted);
+}
+
+.reg-side {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px;
+  word-break: break-all;
+}
+
+.reg-vs {
+  color: var(--muted);
+}
+
+.reg-outcome code {
+  word-break: break-all;
+}
+
+.reg-detail {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reg-diff-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .reg-diff-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reg-diff-col h4 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.reg-diff-col .step:last-of-type {
+  margin-bottom: 4px;
+}
+
+.step-first-diff {
+  border-left-color: var(--error);
+  box-shadow: 0 0 0 1px var(--error);
+}
+
+.step-missing {
+  border-left-color: var(--muted);
+  color: var(--muted);
+  font-size: 12.5px;
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+}
+
+.reg-side-banner {
+  margin-top: 4px;
+}

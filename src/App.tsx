@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { Rule, Simulation } from './types';
 import { simulate } from './engine';
 import { validateRules } from './validate';
@@ -6,8 +6,19 @@ import { SAMPLE_RULES, PRESETS } from './samples';
 import { RulesPanel } from './components/RulesPanel';
 import { Simulator } from './components/Simulator';
 import { TraceView } from './components/TraceView';
+import { RegressionPanel } from './components/RegressionPanel';
 import { ShareCreateDialog } from './components/ShareCreateDialog';
 import { ShareUnlock } from './components/ShareUnlock';
+import {
+  BASELINE_STORAGE_KEY,
+  CASES_STORAGE_KEY,
+  freezeBaseline,
+  loadBaseline,
+  loadCases,
+  safeStorageWrite,
+  type RegressionBaseline,
+  type RegressionCase,
+} from './regression';
 import {
   cleanLocationUrl,
   parseShareHash,
@@ -24,6 +35,24 @@ function loadRules(): Rule[] {
     // 本地缓存损坏时回退到示例规则
   }
   return structuredClone(SAMPLE_RULES);
+}
+
+/** 基线缓存损坏时回退为无基线，不影响规则表 */
+function loadStoredBaseline(): RegressionBaseline | null {
+  try {
+    return loadBaseline(localStorage.getItem(BASELINE_STORAGE_KEY));
+  } catch {
+    return null;
+  }
+}
+
+/** 用例缓存损坏时回退为空列表，不影响规则表 */
+function loadStoredCases(): RegressionCase[] {
+  try {
+    return loadCases(localStorage.getItem(CASES_STORAGE_KEY));
+  } catch {
+    return [];
+  }
 }
 
 function readPendingShare(): string | null {
@@ -46,14 +75,44 @@ export default function App() {
   const [pendingShare, setPendingShare] = useState<string | null>(readPendingShare);
   const [sharing, setSharing] = useState(false);
 
-  const [rules, setRules] = useState<Rule[]>(loadRules);
+  const [rules, setRulesState] = useState<Rule[]>(loadRules);
+  // 规则表每次变更后自增：回归面板据此把旧对比结果标记为过期
+  const [rulesEpoch, setRulesEpoch] = useState(0);
   const [method, setMethod] = useState(PRESETS[0].method);
   const [url, setUrl] = useState(PRESETS[0].url);
   const [sim, setSim] = useState<Simulation | null>(null);
+  const [baseline, setBaseline] = useState<RegressionBaseline | null>(
+    loadStoredBaseline,
+  );
+  const [regCases, setRegCases] = useState<RegressionCase[]>(loadStoredCases);
+
+  // 所有规则编辑入口都经过这里：更新规则表并推进 epoch
+  const setRules = useCallback((next: Rule[]) => {
+    setRulesState(next);
+    setRulesEpoch((e) => e + 1);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(rules));
   }, [rules]);
+
+  useEffect(() => {
+    safeStorageWrite(
+      BASELINE_STORAGE_KEY,
+      baseline ? { ...baseline, ruleCount: baseline.rules.length } : null,
+    );
+  }, [baseline]);
+
+  useEffect(() => {
+    safeStorageWrite(CASES_STORAGE_KEY, regCases);
+  }, [regCases]);
+
+  const freeze = () => setBaseline(freezeBaseline(rules));
+  const clearBaseline = () => {
+    if (window.confirm('确定清除已冻结的基线？相关对比结果将一并清空。')) {
+      setBaseline(null);
+    }
+  };
 
   // 监听浏览器前进 / 后退或手工改写 hash 带来的分享链接变化
   useEffect(() => {
@@ -122,6 +181,17 @@ export default function App() {
           {sim && <TraceView sim={sim} />}
         </div>
       </main>
+      <RegressionPanel
+        currentRules={rules}
+        rulesEpoch={rulesEpoch}
+        baseline={baseline}
+        cases={regCases}
+        draftMethod={method}
+        draftUrl={url}
+        onFreeze={freeze}
+        onClearBaseline={clearBaseline}
+        onCasesChange={setRegCases}
+      />
       {sharing && (
         <ShareCreateDialog
           rules={rules}
