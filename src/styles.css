@@ -552,3 +552,209 @@ input.invalid {
 .share-rule-list code {
   color: var(--muted);
 }
+
+/* ---- 规则回归对比 ---- */
+
+.regression-panel {
+  margin-top: 20px;
+}
+
+.reg-subtitle {
+  margin: 14px 0 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.baseline-info {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.case-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.case-row select {
+  width: 100px;
+}
+
+.case-row input {
+  flex: 1;
+  font-family: var(--mono);
+}
+
+.case-add {
+  margin-top: 2px;
+}
+
+.reg-results {
+  margin-top: 6px;
+}
+
+.ok-text {
+  color: var(--ok);
+}
+
+.changed-text {
+  color: var(--warn);
+  font-weight: 600;
+}
+
+.case-result {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+.case-result.changed {
+  border-color: var(--warn);
+}
+
+.case-result > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.tag.case-method {
+  background: rgba(91, 157, 255, 0.18);
+  color: var(--accent);
+  font-family: var(--mono);
+}
+
+.case-url {
+  flex: 1;
+  min-width: 200px;
+  word-break: break-all;
+}
+
+.tag.tag-changed {
+  background: rgba(224, 169, 62, 0.18);
+  color: var(--warn);
+}
+
+.tag.tag-same {
+  background: rgba(47, 191, 113, 0.18);
+  color: var(--ok);
+}
+
+.trace-toggle {
+  padding: 2px 10px;
+  font-size: 12px;
+}
+
+.outcome-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 720px) {
+  .outcome-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+.outcome-col {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.outcome {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  word-break: break-all;
+}
+
+.outcome-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.outcome-steps {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.outcome-redirect {
+  font-size: 13px;
+}
+
+.tag.status-final,
+.tag.status-redirect {
+  background: rgba(47, 191, 113, 0.18);
+  color: var(--ok);
+}
+
+.tag.status-stopped {
+  background: rgba(224, 169, 62, 0.18);
+  color: var(--warn);
+}
+
+.tag.status-loop,
+.tag.status-max-steps,
+.tag.status-invalid-url,
+.tag.status-invalid-target {
+  background: rgba(229, 83, 75, 0.18);
+  color: var(--error);
+}
+
+.trace-compare {
+  margin-top: 10px;
+  border-top: 1px dashed var(--border);
+  padding-top: 10px;
+}
+
+.trace-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+@media (max-width: 960px) {
+  .trace-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+.trace-col h4 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.trace-step.divergent > .step {
+  border-color: var(--warn);
+  border-left-color: var(--warn);
+}
+
+.trace-step.extra > .step {
+  border-style: dashed;
+}
+
+.div-marker {
+  color: var(--warn);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.trace-end-note {
+  color: var(--muted);
+  font-size: 12.5px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+}

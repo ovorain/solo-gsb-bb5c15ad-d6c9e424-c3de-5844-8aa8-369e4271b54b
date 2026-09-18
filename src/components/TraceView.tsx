@@ -23,7 +23,14 @@ function pathOf(u: string): string {
   }
 }
 
-function StepCard({ step }: { step: Step }) {
+export function StepCard({
+  step,
+  showRuleId = false,
+}: {
+  step: Step;
+  /** 回归对比等场景需要按 rule.id 定位差异时开启 */
+  showRuleId?: boolean;
+}) {
   const { rule } = step;
   const paramEntries = Object.entries(step.params);
   return (
@@ -75,6 +82,7 @@ function StepCard({ step }: { step: Step }) {
         {rule.action.type === 'stop' && <span className="arrow">→ 请求被停止</span>}
       </div>
       <div className="state-key">状态键：{step.stateKey}</div>
+      {showRuleId && <div className="state-key">规则 id：{rule.id}</div>}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { SAMPLE_RULES, PRESETS } from './samples';
 import { RulesPanel } from './components/RulesPanel';
 import { Simulator } from './components/Simulator';
 import { TraceView } from './components/TraceView';
+import { RegressionPanel } from './components/RegressionPanel';
 import { ShareCreateDialog } from './components/ShareCreateDialog';
 import { ShareUnlock } from './components/ShareUnlock';
 import {
@@ -122,6 +123,7 @@ export default function App() {
           {sim && <TraceView sim={sim} />}
         </div>
       </main>
+      <RegressionPanel rules={rules} />
       {sharing && (
         <ShareCreateDialog
           rules={rules}
